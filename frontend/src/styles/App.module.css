@@ -1,0 +1,15 @@
+:root{
+  --primary: #1f3a5f;
+  --accent: #2e8b76;
+  --bg: #f5f7fa;
+  --text: #1a1a1a;
+}
+.app{
+  display:flex;
+  height:100vh;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+}
+.content{flex:1;display:flex;flex-direction:column}
+.main{padding:20px;overflow:auto}

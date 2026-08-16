@@ -1,0 +1,12 @@
+.launcher{
+  position:fixed;right:24px;bottom:24px;width:64px;height:64px;border-radius:50%;background:var(--accent);color:white;border:none;cursor:pointer;font-weight:700}
+.window{position:fixed;right:24px;bottom:100px;width:380px;height:480px;background:white;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,0.12);display:flex;flex-direction:column}
+.header{padding:10px 12px;border-bottom:1px solid #eee;display:flex;justify-content:space-between;align-items:center}
+.close{background:none;border:none;font-size:20px;cursor:pointer}
+.messages{padding:12px;flex:1;overflow:auto}
+.assistantMsg{background:#f1f6f9;padding:8px;border-radius:6px;margin-bottom:8px;max-width:80%}
+.userMsg{background:var(--primary);color:white;padding:8px;border-radius:6px;margin-bottom:8px;align-self:flex-end;max-width:80%}
+.inputRow{display:flex;border-top:1px solid #eee;padding:8px}
+.inputRow input{flex:1;padding:8px;border:1px solid #ddd;border-radius:4px}
+.inputRow button{margin-left:8px;padding:8px 12px;background:var(--primary);color:white;border:none;border-radius:4px}
+.typing{font-style:italic;color:#666;margin-bottom:8px}

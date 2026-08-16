@@ -1,0 +1,5 @@
+[
+  { "name": "Aisha Khan", "role": "Software Engineer", "department": "Engineering", "email": "aisha.khan@example.com" },
+  { "name": "John Doe", "role": "Product Manager", "department": "Product", "email": "john.doe@example.com" },
+  { "name": "Maria Lopez", "role": "HR Specialist", "department": "HR", "email": "maria.lopez@example.com" }
+]

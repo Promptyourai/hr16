@@ -1,0 +1,10 @@
+.sidebar{
+  width:220px;
+  background:var(--primary);
+  color:white;
+  padding:20px;
+}
+.brand{font-size:16px;margin-bottom:16px}
+.sidebar ul{list-style:none;padding:0}
+.sidebar a{color:white;text-decoration:none;display:block;padding:8px 0}
+.sidebar a.active{font-weight:700}

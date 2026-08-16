@@ -1,0 +1,12 @@
+.page{padding:16px}
+.card{background:white;padding:16px;border-radius:8px;margin-bottom:16px}
+.tiles{display:flex;gap:12px;margin-bottom:16px}
+.tile{background:white;padding:12px;border-radius:8px;flex:1}
+.announcements{background:white;padding:12px;border-radius:8px}
+.form{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.form label{display:flex;flex-direction:column;font-size:13px}
+.table{width:100%;border-collapse:collapse}
+.table th,.table td{padding:8px;border-bottom:1px solid #eee;text-align:left}
+.search{width:100%;padding:8px;margin-bottom:12px}
+.accordionBtn{width:100%;text-align:left;padding:10px;background:#fff;border:1px solid #eee;border-radius:6px;margin-bottom:6px}
+.accordionContent{padding:10px;border-left:3px solid var(--accent);background:#fafafa;margin-bottom:8px}
