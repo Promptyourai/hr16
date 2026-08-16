@@ -8,7 +8,5 @@
   "scripts": {
     "build": "npm run build --prefix frontend"
   },
-  "dependencies": {
-    "@azure/openai": "^1.0.0"
-  }
+  "dependencies": {}
 }

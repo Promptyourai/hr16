@@ -14,10 +14,8 @@ exports.handler = async function (event, context) {
       };
     }
 
+    // Call Azure OpenAI REST API directly to avoid SDK dependency in Netlify build
     try {
-      const { OpenAIClient, AzureKeyCredential } = require('@azure/openai');
-      const client = new OpenAIClient(endpoint, new AzureKeyCredential(apiKey));
-
       const system = {
         role: 'system',
         content:
@@ -28,13 +26,29 @@ exports.handler = async function (event, context) {
       if (Array.isArray(history)) history.forEach(h => messages.push(h));
       messages.push({ role: 'user', content: message });
 
-      const response = await client.getChatCompletions(deployment, { messages });
-      const choice = response?.choices?.[0];
-      const reply = choice?.message?.content || choice?.delta?.content || response?.choices?.[0]?.text || "I'm here to help with HR questions.";
+      const url = `${endpoint.replace(/\/+$/,'')}/openai/deployments/${encodeURIComponent(deployment)}/chat/completions?api-version=2023-10-01-preview`;
+
+      const resp = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'api-key': apiKey
+        },
+        body: JSON.stringify({ messages })
+      });
+
+      if (!resp.ok) {
+        const txt = await resp.text();
+        console.error('Azure REST error', resp.status, txt);
+        return { statusCode: 200, body: JSON.stringify({ reply: "I'm here to help with HR questions about leave, payroll, benefits, and policies." }) };
+      }
+
+      const data = await resp.json();
+      const reply = data?.choices?.[0]?.message?.content || data?.choices?.[0]?.text || "I'm here to help with HR questions.";
 
       return { statusCode: 200, body: JSON.stringify({ reply }) };
     } catch (err) {
-      console.error('Azure SDK error', err);
+      console.error('Azure REST error', err);
       return { statusCode: 200, body: JSON.stringify({ reply: "I'm here to help with HR questions about leave, payroll, benefits, and policies." }) };
     }
   } catch (err) {
