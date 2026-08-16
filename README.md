@@ -39,3 +39,6 @@ Files to verify first
 - `backend/index.js`
 - `netlify/functions/chat.ts`
 - `.env.example`
+
+Note: A small automated commit was made to trigger a Netlify redeploy.
+
