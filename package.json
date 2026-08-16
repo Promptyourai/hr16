@@ -1,0 +1,11 @@
+{
+  "name": "peoplehub-root",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": "18.x"
+  },
+  "scripts": {
+    "build": "npm run build --prefix frontend"
+  }
+}

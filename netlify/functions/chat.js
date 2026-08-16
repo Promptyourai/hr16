@@ -1,6 +1,4 @@
-import type { Handler } from '@netlify/functions';
-
-const handler: Handler = async (event) => {
+exports.handler = async function (event, context) {
   try {
     const body = event.body ? JSON.parse(event.body) : {};
     const { message, history } = body;
@@ -16,9 +14,7 @@ const handler: Handler = async (event) => {
       };
     }
 
-    // Use SDK if available
     try {
-      // require to avoid ESM/TS build mismatch
       const { OpenAIClient, AzureKeyCredential } = require('@azure/openai');
       const client = new OpenAIClient(endpoint, new AzureKeyCredential(apiKey));
 
@@ -29,7 +25,7 @@ const handler: Handler = async (event) => {
       };
 
       const messages = [system];
-      if (Array.isArray(history)) history.forEach((h: any) => messages.push(h));
+      if (Array.isArray(history)) history.forEach(h => messages.push(h));
       messages.push({ role: 'user', content: message });
 
       const response = await client.getChatCompletions(deployment, { messages });
@@ -46,5 +42,3 @@ const handler: Handler = async (event) => {
     return { statusCode: 500, body: JSON.stringify({ reply: 'Server error' }) };
   }
 };
-
-export { handler };
