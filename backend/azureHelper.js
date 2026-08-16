@@ -1,8 +1,5 @@
 async function getAzureReply({ message, history = [], endpoint, apiKey, deployment }) {
   try {
-    const { OpenAIClient, AzureKeyCredential } = require('@azure/openai');
-    const client = new OpenAIClient(endpoint, new AzureKeyCredential(apiKey));
-
     const system = {
       role: 'system',
       content:
@@ -10,18 +7,42 @@ async function getAzureReply({ message, history = [], endpoint, apiKey, deployme
     };
 
     const messages = [system];
-    if (Array.isArray(history)) {
-      history.forEach(h => messages.push(h));
-    }
+    if (Array.isArray(history)) history.forEach(h => messages.push(h));
     messages.push({ role: 'user', content: message });
 
-    const response = await client.getChatCompletions(deployment, { messages });
-    // SDK response path may vary; attempt to read the common shape
-    const choice = response?.choices?.[0];
-    const reply = choice?.message?.content || choice?.delta?.content || (response?.choices?.[0]?.text);
-    return reply || "I'm here to help with HR questions about leave, payroll, benefits, and policies.";
+    const url = `${endpoint.replace(/\/+$/,'')}/openai/deployments/${encodeURIComponent(deployment)}/chat/completions?api-version=2023-10-01-preview`;
+
+    // Use global fetch if available (Node 18+). If not, try to require node-fetch.
+    let fetchFn = global.fetch;
+    if (!fetchFn) {
+      try {
+        fetchFn = require('node-fetch');
+      } catch (e) {
+        console.error('Fetch is not available and node-fetch is not installed.');
+        return "I'm here to help with HR questions about leave, payroll, benefits, and policies.";
+      }
+    }
+
+    const resp = await fetchFn(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'api-key': apiKey
+      },
+      body: JSON.stringify({ messages })
+    });
+
+    if (!resp.ok) {
+      const txt = await resp.text();
+      console.error('Azure REST error', resp.status, txt);
+      return "I'm here to help with HR questions about leave, payroll, benefits, and policies.";
+    }
+
+    const data = await resp.json();
+    const reply = data?.choices?.[0]?.message?.content || data?.choices?.[0]?.text || "I'm here to help with HR questions.";
+    return reply;
   } catch (err) {
-    console.error('Azure OpenAI SDK error', err);
+    console.error('Azure REST error', err);
     return "I'm here to help with HR questions about leave, payroll, benefits, and policies.";
   }
 }
